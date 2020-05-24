@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
-from utils.dataloader import DataProcessor
+from ../utils.dataloader import DataProcessor
 import torch.optim as optim
 from skimage.util import img_as_float, img_as_ubyte
 
