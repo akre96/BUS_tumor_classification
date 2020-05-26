@@ -5,9 +5,11 @@ additional BUS images
 Author: Samir Akre
 """
 import random
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.utils.data as data
+from torch.utils.data.sampler import SubsetRandomSampler
 from torch.optim import Adam
 from torchvision import transforms
 from torchgan.models import (
@@ -42,14 +44,25 @@ m_tfs = transforms.Compose(
 dataset = BUSI_Dataset(
 	'/data/dataset_busi',
 	transform=tfs, 
-	transform_mask=m_tfs
+	transform_mask=m_tfs,
+    goodfiles_only=True
 )
 
+validation_split = .2
+dataset_size = len(dataset)
+indices = list(range(dataset_size))
+split = int(np.floor(validation_split * dataset_size))
+np.random.seed(manualSeed)
+np.random.shuffle(indices)
+train_indices, valid_indices = indices[split:], indices[split:]
+
+train_sampler = SubsetRandomSampler(train_indices)
+valid_sampler = SubsetRandomSampler(valid_indices)
 
 batch_size = 32
 if torch.cuda.is_available():
     device = torch.device('cuda')
-    epochs = 100
+    epochs = 2000
 
 else:
     device = torch.device("cpu")
@@ -57,9 +70,11 @@ else:
 
 print('Device:', device)
 print('Epochs:', epochs)
+print('Dataset Total Size:', dataset_size)
+print('Dataset For Validation Remaining:', split)
 print('Batch Size:', batch_size)
 
-dataloader = data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+dataloader = data.DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
 
 dcgan_network = {
     "generator": {
@@ -71,6 +86,7 @@ dcgan_network = {
             "step_channels": 64,
             "nonlinearity": nn.LeakyReLU(0.2),
             "last_nonlinearity": nn.Tanh(),
+	    "label_type": 'required'
         },
         "optimizer": {"name": Adam, "args": {"lr": 0.0001, "betas": (0.5, 0.999)}},
     },
@@ -82,6 +98,7 @@ dcgan_network = {
             "step_channels": 64,
             "nonlinearity": nn.LeakyReLU(0.2),
             "last_nonlinearity": nn.LeakyReLU(0.2),
+	    "label_type": 'required'
         },
         "optimizer": {"name": Adam, "args": {"lr": 0.0003, "betas": (0.5, 0.999)}},
     },
