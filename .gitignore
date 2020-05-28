@@ -1,4 +1,12 @@
+# Static image outputs from GAN
 images
-model
-__pycache__
 
+# Gan model
+model
+
+# Python cache file
+__pycache__
+.pytest_cache
+
+# Virtual environment directory
+venv
