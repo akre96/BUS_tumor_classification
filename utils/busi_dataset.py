@@ -62,7 +62,7 @@ class BUSI_Dataset(torch.utils.data.Dataset):
         
         img = Image.open(self.imgs[idx]).convert('L')
         mask = Image.open(self.masks[idx]).convert('L')
-        label = torch.tensor([self.label_encoded[idx]], dtype=torch.long)
+        label = torch.tensor(self.label_encoded[idx], dtype=torch.long)
         if self.transform:
             img = self.transform(img)
             if self.transform_mask:
