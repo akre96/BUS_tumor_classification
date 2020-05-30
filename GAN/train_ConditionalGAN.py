@@ -4,6 +4,9 @@ additional BUS images
 
 Author: Samir Akre
 """
+import sys
+sys.path.insert(0, '..utils')
+
 import random
 import numpy as np
 import torch
@@ -21,7 +24,8 @@ from torchgan.losses import (
     LeastSquaresDiscriminatorLoss,
     LeastSquaresGeneratorLoss
 )
-from utils.busi_dataset import BUSI_Dataset
+
+from busi_dataset import BUSI_Dataset
 
 manualSeed = 999
 random.seed(manualSeed)
