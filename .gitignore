@@ -1,5 +1,6 @@
 # Static image outputs from GAN
 images
+GAN/sample_images
 
 # Gan model
 model
