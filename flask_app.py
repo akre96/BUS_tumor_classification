@@ -3,8 +3,8 @@ from classification_model.classification import predict
 
 app = Flask(__name__)
 
-demo_mask = '/data/dataset_busi/normal/normal (100)_mask.png'
-demo_img = '/data/dataset_busi/normal/normal (100).png'
+demo_mask = '/data/dataset_busi/malignant/malignant (16)_mask.png'
+demo_img = '/data/dataset_busi/malignant/malignant (16).png'
 pred = predict(demo_img, demo_mask, 'classification_model/models/model.h5')
 print(pred)
 
