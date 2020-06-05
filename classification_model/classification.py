@@ -43,6 +43,10 @@ def preprocess_input(img_path, mask_path, img_size=(224, 224)):
     mask = Image.open(mask_path)
     mask_arr = np.array(mask)
     final_mask_arr = preprocess_mask(mask_arr).astype('uint8')
+
+    if np.sum(final_mask_arr) == 0:
+        return None
+
     final_mask_arr = np.expand_dims(final_mask_arr, axis=-1)
     
     filler_arr = np.full(img_arr.shape, 0).astype('uint8')
@@ -54,7 +58,10 @@ def preprocess_input(img_path, mask_path, img_size=(224, 224)):
     return img
 
 def predict(img_path, mask_path, model_path):
-    img = preprocess_input(img_path, mask_path)    
+    img = preprocess_input(img_path, mask_path)
+    if img is None:
+        return -1
+
     model = load_model(model_path, compile=False)
     y_pred = model.predict(img).flatten()[0]
     return y_pred
