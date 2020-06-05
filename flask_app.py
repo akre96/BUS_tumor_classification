@@ -5,6 +5,8 @@ app = Flask(__name__)
 
 demo_mask = '/data/dataset_busi/normal/normal (100)_mask.png'
 demo_img = '/data/dataset_busi/normal/normal (100).png'
+pred = predict(demo_img, demo_mask, 'classification_model/models/model.h5')
+print(pred)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -20,6 +22,4 @@ def home():
 
 @app.route('/ai', methods=['GET', 'POST'])
 def segment():
-    pred = predict(demo_img, demo_mask, 'classification_model/models/model.h5')
-    print(pred)
     return render_template('home.html')
