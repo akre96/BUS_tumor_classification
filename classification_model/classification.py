@@ -38,10 +38,20 @@ def preprocess_mask(mask_arr):
 def preprocess_input(img_path, mask_path, img_size=(224, 224)):
     img = Image.open(img_path)
     img_arr = np.array(img)
-    img_arr = np.expand_dims(img_arr, axis=-1)
+    if len(img_arr.shape) == 2:
+        img_arr = np.expand_dims(img_arr, axis=-1)
+    elif len(img_arr.shape) == 3:
+        img_arr = img_arr[:, :, 0]
+        img_arr = np.expand_dims(img_arr, axis=-1)
+
 
     mask = Image.open(mask_path)
     mask_arr = np.array(mask)
+    print(mask_arr.shape)
+
+    if len(mask_arr.shape) == 3:
+        mask_arr = mask_arr[:, :, 0]
+
     final_mask_arr = preprocess_mask(mask_arr).astype('uint8')
 
     if np.sum(final_mask_arr) == 0:
