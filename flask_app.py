@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, url_for
+from classification_model.classification import predict
 
 app = Flask(__name__)
 
@@ -14,5 +15,11 @@ def home():
             image = url_for('static', filename='demo_image.jpg')
             image_name = 'demo_image'
 
-    return render_template('home.html', image=demo_img, image_name=image_name)
+    return render_template('home.html', image=image, image_name=image_name)
 
+
+@app.route('/ai', methods=['GET', 'POST'])
+def segment():
+    pred = predict(demo_img, demo_mask, 'classification_model/models/model.h5')
+    print(pred)
+    return render_template('home.html')
