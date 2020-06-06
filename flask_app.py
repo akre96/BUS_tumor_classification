@@ -1,33 +1,47 @@
 import os, sys
-from flask import Flask, render_template, request, url_for, session
+from flask import (
+    Flask,
+    render_template,
+    request,
+    url_for,
+    session,
+    send_from_directory
+)
+from werkzeug.utils import secure_filename
 from PIL import Image
 from classification_model.classification import predict
 from segmentation_model.predict import get_mask
 
 
 app = Flask(__name__)
-app.secret_key = 'TEMPORARY'
-if app.secret_key == 'TEMPORARY' and os.environ['FLASK_ENV'] != 'development':
-    raise ValueError('Secret Key used not for production')
-if app.secret_key == 'TEMPORARY':
-    print('\nWARNING SECRET KEY UNSECURE\n')
-
-demo_img = 'static/demo_image.jpg'
-demo_mask = 'static/demo_image_mask.jpg'
-
+app.secret_key = os.environ['FLASK_SECRET']
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 mask_model_path = 'segmentation_model/checkpoints/Resnet18_UNET_0.19.pth'
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     image = None
     image_name = None
     if request.method == 'POST':
-        if request.form['use_demo'] == '1':
+        if 'use_demo' in request.form:
             image = url_for('static', filename='demo_image.jpg')
             image_name = 'demo_image'
-            session['image_name'] = image_name
-            session['image'] = image
             session['demo'] = True
+        elif 'file_upload' in request.form:
+            if 'file' in request.files:
+                up_file = request.files['file']
+                if up_file:
+                    fname = secure_filename(up_file.filename)
+                    up_file.save(os.path.join('static/tmp', fname))
+
+                    image = url_for('static', filename=os.path.join('tmp', fname))
+                    image_name = '.'.join(fname.split('.')[:-1])
+        else:
+            print(request.form)
+        session['image_name'] = image_name
+        session['image'] = image
 
     return render_template('home.html', image=image, image_name=image_name)
 
@@ -40,7 +54,6 @@ def segment():
     show_ai = False
     render_mask = None
     render_mask_out = 'tmp/render_mask.png'
-    mask = None
     if request.method == 'POST':
         if 'show_ai' in request.form.keys():
             show_ai = bool(int(request.form['show_ai']))
@@ -65,7 +78,10 @@ def segment():
             mask_im = mask_im.resize(image_size)
             abs_mask = 'static/tmp/raw_mask.png'
             mask_im.save(abs_mask, 'PNG')
-            ai_results = predict(abs_img,  abs_mask, 'classification_model/models/model.h5')
+            ai_results = round(
+                predict(abs_img,  abs_mask, 'classification_model/models/model.h5'),
+                6
+            )
             mask_bg_to_transparent(abs_mask, 'static/'+render_mask_out)
 
         session['ai_pred_image'] = image
@@ -73,7 +89,14 @@ def segment():
 
         render_mask = url_for('static', filename=render_mask_out)
 
-    return render_template('home.html', image=image, image_name=image_name, ai_results=ai_results, mask=render_mask, show_ai=show_ai)
+    return render_template(
+        'home.html',
+        image=image,
+        image_name=image_name,
+        ai_results=ai_results,
+        mask=render_mask,
+        show_ai=show_ai
+    )
 
 
 def mask_bg_to_transparent(img_path, out='static/tmp/temp_mask.png'):

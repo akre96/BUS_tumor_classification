@@ -3,13 +3,25 @@
         Breast Ultrasound Lesion Detection and Diagnosis
     </h1>
 </div>
-<div class="row">
-    <div class="input-group">
-        <input type="text" class="form-control", placeholder="Search PACS...", aria-label="Search PACS">
-    </div>
-    <form action="/" method="post">
-        <button type="submit" name="use_demo" value=1 class="mt-3 btn btn-sm btn-secondary mb-2">Use Demo Image</button>
+<br />
+<div class="row align-items-center ">
+    <div class="col">
+    <form action="/" method="post" enctype=multipart/form-data>
+        <div class="form-group">
+            <label for="BUS_image">Upload Breast Ultrasound Image</label>
+            <input type="file" name='file' class="form-control-file" id="BUS_image">
+            <button type="submit" name="file_upload" value=1 class="mt-3 btn btn-sm btn-success mb-2">Upload Image</button>
+        </div>
     </form>
+    </div>
+    <div class="col-1">
+        <p class="h5">OR</p>
+    </div>
+    <div class="col text-center">
+        <form action="/" method="post">
+            <button type="submit" name="use_demo" value=1 class="mt-3 btn btn-sm btn-secondary mb-2">Use Demo Image</button>
+        </form>
+    </div>
 </div>
 <br/>
 <div class="row">
@@ -30,8 +42,10 @@
         <button type="submit" name='show_ai' value=1 class="btn btn-md btn-info mb-2">Segment and Diagnose</button>
         {% endif %}
         <div class="form-check">
+        <!--  TODO: Future input to allow optional segmentation immediately
         <input type="checkbox" class="form-check-input" name="show_first" id="show_first">
         <label for="show_first" class="form-check-label">Always Show AI Diagnosis on Load</label>
+        -->
         </div>
     </form>
 </div>
@@ -57,7 +71,7 @@
             {% if ai_results > 0 %}
             <tr>
                 <th scope="row">Malignancy Risk</th>
-                <td>{{ 100*ai_results | round(3, 'common') }}%<td>
+                <td>{{ 100*ai_results }}%<td>
             </tr>
             {% endif %}
         </tbody>
