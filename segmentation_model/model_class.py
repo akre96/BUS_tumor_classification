@@ -2,9 +2,11 @@ import segmentation_models_pytorch as smp
 import numpy as np
 import torch
 import torch.nn as nn
+from dataloader import DataProcessor
 from torch.utils.data import DataLoader, random_split
-from ../utils.dataloader import DataProcessor
 import torch.optim as optim
+from skimage import io
+from skimage.color import rgb2gray
 from skimage.util import img_as_float, img_as_ubyte
 
 class Resnet18Unet:
@@ -101,6 +103,23 @@ class Resnet18Unet:
                     valid_loss_min = valid_loss
         else:
             return "Image and Mask path required!"
+
+    def get_prediction(self, path_to_image=None, resiz_img=None, expand_dim=True):
+        if path_to_image:
+            image = rgb2gray(io.imread(path_to_image))
+            dataset = DataProcessor(imgs_dir=None, masks_dir=None)
+            processed = dataset.preprocess(image, new_size=256, expand_dim=True, adjust_label=False, normalize=True, img_transforms=None)
+            img = torch.from_numpy(np.expand_dims(processed, axis=0))
+
+            # get predictoin
+            with torch.no_grad():
+                self.model.eval()
+                data = img.to(self.device, dtype=torch.float)
+                output = self.model(data)
+                output_thresh = output > 0.5
+                image_pred = (output_thresh.cpu().numpy() * 255)
+                image_pred = image_pred.astype(np.uint8)
+            return image_pred[0, 0]
 
     def _get_iou_vector(self, target, prediction):
         run_iou = 0.0
