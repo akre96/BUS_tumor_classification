@@ -1,7 +1,9 @@
-import os
+import os, sys
 from flask import Flask, render_template, request, url_for, session
 from PIL import Image
 from classification_model.classification import predict
+from segmentation_model.predict import get_mask
+
 
 app = Flask(__name__)
 app.secret_key = 'TEMPORARY'
@@ -10,9 +12,10 @@ if app.secret_key == 'TEMPORARY' and os.environ['FLASK_ENV'] != 'development':
 if app.secret_key == 'TEMPORARY':
     print('\nWARNING SECRET KEY UNSECURE\n')
 
-
 demo_img = 'static/demo_image.jpg'
 demo_mask = 'static/demo_image_mask.jpg'
+
+mask_model_path = 'segmentation_model/checkpoints/Resnet18_UNET_0.19.pth'
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -36,9 +39,9 @@ def segment():
     ai_results = None
     show_ai = False
     render_mask = None
+    render_mask_out = 'tmp/render_mask.png'
     mask = None
     if request.method == 'POST':
-        print(request.form)
         if 'show_ai' in request.form.keys():
             show_ai = bool(int(request.form['show_ai']))
             print('SHOW_AI', request.form['show_ai'])
@@ -46,25 +49,25 @@ def segment():
     if 'image' in session:
         image = session['image']
         image_name = session['image_name']
-    if 'demo' in session:
-        if session['demo']:
-            mask = demo_mask
-            render_mask_out = 'tmp/temp_mask.png'
 
     if image is not None:
-        print(image, mask)
         abs_img = image[1:]  # Removes absolute path used by flask app
-        abs_mask = mask
+        run_ai = True
         if 'ai_pred_image' in session:
             if session['ai_pred_image'] == image:
                 print('USING CACHED PREDICTION')
+                run_ai = False
                 ai_results = float(session['ai_results'])
-            else:
-                ai_results = predict(abs_img,  abs_mask, 'classification_model/models/model.h5')
-                mask_bg_to_transparent(mask)
-        else:
+        if run_ai:
+            image_size = Image.open(abs_img).size
+            mask_arr = get_mask(abs_img, mask_model_path)
+            mask_im = Image.fromarray(mask_arr)
+            mask_im = mask_im.resize(image_size)
+            abs_mask = 'static/tmp/raw_mask.png'
+            mask_im.save(abs_mask, 'PNG')
             ai_results = predict(abs_img,  abs_mask, 'classification_model/models/model.h5')
-            mask_bg_to_transparent(mask)
+            mask_bg_to_transparent(abs_mask, 'static/'+render_mask_out)
+
         session['ai_pred_image'] = image
         session['ai_results'] = str(ai_results)
 

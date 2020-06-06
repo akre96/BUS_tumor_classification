@@ -2,7 +2,7 @@ import segmentation_models_pytorch as smp
 import numpy as np
 import torch
 import torch.nn as nn
-from dataloader import DataProcessor
+from .dataloader import DataProcessor
 from torch.utils.data import DataLoader, random_split
 import torch.optim as optim
 from skimage import io
@@ -14,9 +14,6 @@ class Resnet18Unet:
         self.path_to_dict = path_to_dict
         self.model = smp.Unet('resnet18', in_channels=input_channel, classes=num_classes, activation=activation,
                               encoder_weights='imagenet')
-        if self.path_to_dict:
-            weights = torch.load(path_to_dict)
-            self.model.load_state_dict(weights)
         # Check for CUDA
         train_on_gpu = torch.cuda.is_available()
         if not train_on_gpu:
@@ -29,6 +26,9 @@ class Resnet18Unet:
             self.device = torch.device("cuda:0")
             print("CUDA is available!")
             print("=" * 30)
+        if self.path_to_dict:
+            weights = torch.load(path_to_dict, map_location=self.device)
+            self.model.load_state_dict(weights)
         # Load model on CUDA
         self.model.to(self.device)
 

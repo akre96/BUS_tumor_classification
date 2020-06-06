@@ -1,4 +1,4 @@
-from model_class import Resnet18Unet
+from .model_class import Resnet18Unet
 import matplotlib.pyplot as plt
 
 def get_mask(path_to_image=None, path_to_weights="checkpoints/Resnet18_UNet_0.19.pth"):
