@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.secret_key = os.environ['FLASK_SECRET']
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-mask_model_path = 'segmentation_model/checkpoints/Resnet18_UNet_0.19.pth'
+mask_model_path = 'segmentation_model/checkpoints/Resnet18_UNET_0.19.pth'
 
 if not Path('static/tmp').is_dir():
     print('Making folder at static/tmp')
@@ -74,7 +74,7 @@ def segment():
             if session['ai_pred_image'] == image:
                 print('USING CACHED PREDICTION')
                 run_ai = False
-                ai_results = round(float(session['ai_results']), 6)
+                ai_results = session['ai_results']
         if run_ai:
             image_size = Image.open(abs_img).size
             mask_arr = get_mask(abs_img, mask_model_path)
@@ -82,14 +82,12 @@ def segment():
             mask_im = mask_im.resize(image_size)
             abs_mask = 'static/tmp/raw_mask.png'
             mask_im.save(abs_mask, 'PNG')
-            ai_results = round(
-                predict(abs_img,  abs_mask, 'classification_model/models/model.h5'),
-                6
-            )
+            ai_results = predict(abs_img,  abs_mask, 'classification_model/models/model.h5')
             mask_bg_to_transparent(abs_mask, 'static/'+render_mask_out)
 
+        ai_results = round(float(str(ai_results)), 6)
         session['ai_pred_image'] = image
-        session['ai_results'] = str(ai_results)
+        session['ai_results'] = ai_results
 
         render_mask = url_for('static', filename=render_mask_out)
 
