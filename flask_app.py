@@ -1,4 +1,5 @@
 import os, sys
+from pathlib import Path
 from flask import (
     Flask,
     render_template,
@@ -19,6 +20,9 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 mask_model_path = 'segmentation_model/checkpoints/Resnet18_UNET_0.19.pth'
 
+if not Path('static/tmp').is_dir():
+    print('Making folder at static/tmp')
+    Path('static/tmp').mkdir()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -70,7 +74,7 @@ def segment():
             if session['ai_pred_image'] == image:
                 print('USING CACHED PREDICTION')
                 run_ai = False
-                ai_results = float(session['ai_results'])
+                ai_results = round(float(session['ai_results']), 6)
         if run_ai:
             image_size = Image.open(abs_img).size
             mask_arr = get_mask(abs_img, mask_model_path)

@@ -1,7 +1,7 @@
  
  <div style='position: relative; top:0; left:0; display:inline-block'>
-<img class='img-fluid' src={{ image | default("https://via.placeholder.com/800", True) }}>
+<img class='img-fluid' style='min-width: 45vw;' src={{ image | default("https://via.placeholder.com/800", True) }}>
 {% if mask and show_ai %}
-<img style="position: absolute; top:0; left:0; padding: inherit; opacity: .5;" class='img-fluid' src={{ mask }}>
+<img style="min-width: 45vw; position: absolute; top:0; left:0; padding: inherit; opacity: .5;" class='img-fluid' src={{ mask }}>
 </div>
 {% endif %}
