@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.secret_key = os.environ['FLASK_SECRET']
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-mask_model_path = 'segmentation_model/checkpoints/Resnet18_UNET_0.19.pth'
+mask_model_path = 'segmentation_model/checkpoints/Resnet18_UNet_0.19.pth'
 
 if not Path('static/tmp').is_dir():
     print('Making folder at static/tmp')
