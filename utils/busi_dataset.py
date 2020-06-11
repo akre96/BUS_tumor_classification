@@ -11,8 +11,6 @@ from pathlib import Path
 import numpy as np
 
 class BUSI_Dataset(torch.utils.data.Dataset):
-
-    
     def __init__(
         self,
         root_dir: str,
@@ -20,6 +18,20 @@ class BUSI_Dataset(torch.utils.data.Dataset):
         transform_mask=None,
         goodfiles_only=True,
     ):
+        """ Pytorch Data Loader for BUSI Dataset
+        Items returned in order (image, label, mask)
+        Args:
+            root_dir (str): BUSI Directory
+            transform (Any, optional): Pytorch image transformations to apply
+                to BUS images. Defaults to None.
+            transform_mask (Any, optional): Pytorch image transformations to
+                apply to masks. Defaults to None.
+            goodfiles_only (bool, optional): Only use BUSI files without
+                overlayed annotations. Defaults to True.
+
+        Raises:
+            ValueError: If all images don't have a corresponding mask
+        """
         self.masks = list(Path(root_dir).glob('**/*_mask.png'))
         self.imgs = [
             Path(m.parent, m.name.replace('_mask', ''))
@@ -36,8 +48,8 @@ class BUSI_Dataset(torch.utils.data.Dataset):
                 mask for mask in self.masks
                 if mask.name in good_masks
             ]
-            if not (len(self.imgs) == len(self.masks)):
-                raise ValueError("Masks don't match images")
+        if not (len(self.imgs) == len(self.masks)):
+            raise ValueError("Masks don't match images")
 
         self.labels = [
             im.name.split(' ')[0] for im in self.imgs
@@ -63,6 +75,8 @@ class BUSI_Dataset(torch.utils.data.Dataset):
         img = Image.open(self.imgs[idx]).convert('L')
         mask = Image.open(self.masks[idx]).convert('L')
         label = torch.tensor(self.label_encoded[idx], dtype=torch.long)
+
+        # Add image transforms
         if self.transform:
             img = self.transform(img)
             if self.transform_mask:
@@ -71,6 +85,13 @@ class BUSI_Dataset(torch.utils.data.Dataset):
         return img, label, mask
 
     def get_goodfiles(self):
+        """ Returns image names of "clean" BUS images
+        "Clean" images are manually found to have minimal
+        overalyed annotations.
+
+        Returns:
+            List[str]: List of filenames
+        """
         return [
             'benign (10).png', 
             'benign (100).png', 
