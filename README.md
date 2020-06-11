@@ -17,11 +17,11 @@ _Note:_ The below scripts assume they are being run in the AWS instance as the t
 ### Flask App
 - __flask_app.py:__ Web application for UI of segmentation/classification pipeline
 - __start_flask_dev.sh:__ Starts the flask web application in development mode to port 5000
-- __templates/__: Jinja2 templates for flask app
-	-__base.html__: Imports bootstrap style sheets, JQuery, and BootstrapJS 
-	-__home.html__: Main page, loads elements from `image_viewer.html` and `menu.html`
-	-__image_viewer.html__: Image component. Handles overlay of mask/BUS image
-	-__menu.html__: Contains all buttons/forms used
+- __templates/__: Jinja2 templates for flask app  
+	- __base.html__: Imports bootstrap style sheets, JQuery, and BootstrapJS 
+	- __home.html__: Main page, loads elements from `image_viewer.html` and `menu.html`
+	- __image_viewer.html__: Image component. Handles overlay of mask/BUS image
+	- __menu.html__: Contains all buttons/forms used
 - __static/__: Flask app static files (images, css, etc.)
 
 ### Utilities
