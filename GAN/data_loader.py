@@ -6,6 +6,18 @@ import os
 import numpy as np
 
 """Separate the images into 2 bins, img and corresponding masks"""
+def separate(lst, key="*_mask.png"):
+    no_match = []
+    match = []
+    
+    for i in lst:
+        if fnmatch.fnmatch(i, key):
+            match.append(i)
+        else:
+            no_match.append(i)
+    return match, no_match
+
+"""Preprocess intensity scales"""
 def preprocessing(img, out_size):
     img = cv.resize(img, dsize=out_size, interpolation=cv.INTER_NEAREST)
     img = (img - img.min()) / (img.max() - img.min())
