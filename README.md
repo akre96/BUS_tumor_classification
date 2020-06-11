@@ -7,13 +7,13 @@ A Project for BE 223C
 1. Select a dockerfile to use, if GPU access is avilable and configured (with nvidia-docker installed) use `Dockerfile-gpu` otherwise use `Dockerfile-cpu`
 2. To build the image for CPU run:
 ```
-docker build -t bus_seg:cpu -f Dockerfile-cpu
+docker build -t bus_seg:cpu -f Dockerfile-cpu .
 ```
 
 To build the image for GPU: 
 Follow instruction [here](https://github.com/NVIDIA/nvidia-docker/blob/master/README.md#quickstart) to install nvidia docker toolkit then run:
 ```
-docker build -t bus_seg:gpu -f Dockerfile-gpu
+docker build -t bus_seg:gpu -f Dockerfile-gpu .
 ```
 3. Start the built image, the Flask application will be running on port 5000
 ```
