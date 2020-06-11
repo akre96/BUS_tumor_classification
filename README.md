@@ -37,6 +37,10 @@ _Note:_ The below scripts assume they are being run in the AWS instance as the t
 	- __train_DCGAN.py:__ Trains a standard Deep Convolutional GAN
 	- __generate_conditional_gan_images.py:__ Generates example images from conditional GAN model trained for 2k epochs
 	- __generate_dcgan_images.py:__ Generates example images from DCGAN model trained for 2k epochs
+	- __DCGAN_Ultrasound.ipynb:__ DCGAN building from scratch (contain pretrained weights for 2k epochs ~1.3 Gb)
+	- __dataloader.py:__ Data preprocessing for DCGAN building from scratch
+	- __discriminator_loss.py:__ Discriminator loss function for DCGAN building from scratch
+	- __generator_loss.py:__ Generator loss function for DCGAN building from scratch
 
 ### Flask App
 - __flask_app.py:__ Web application for UI of segmentation/classification pipeline
