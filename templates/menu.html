@@ -61,17 +61,19 @@
         <tbody>
             <tr>
                 <th scope="row">Diagnosis</th>
-                {% if ai_results == -1 %}
-                    <td>Normal Tissue<td>
-                {% endif %}
-                {% if ai_results > 0 %}
-                    <td>Lesion Detected<td>
-                {% endif %}
+                    <td>
+                    {% if ai_results == -1 %}
+                        Normal Tissue
+                    {% endif %}
+                    {% if ai_results > 0 %}
+                        Lesion Detected
+                    {% endif %}
+                    </td>
             </tr>
             {% if ai_results > 0 %}
             <tr>
                 <th scope="row">Malignancy Risk</th>
-                <td>{{ 100*ai_results }}%<td>
+                <td>{{ 100*ai_results }}%</td>
             </tr>
             {% endif %}
         </tbody>
