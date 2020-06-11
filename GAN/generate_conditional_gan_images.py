@@ -1,5 +1,10 @@
 """ Example images from TorchGAN trained generator
 
+Example usage:
+```
+python generate_conditional_gan_images.py [n_images] [output_directory]
+```
+
 Author: Samir Akre
 """
 from pathlib import Path

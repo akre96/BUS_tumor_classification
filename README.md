@@ -3,11 +3,27 @@ A Project for BE 223C
 
 
 ## File Descriptions
-- __train_gan.py:__ Trains a DCGAN based network to create fake ultrasound images
+
+### TorchGAN
+_Note:_ The below scripts assume they are being run in the AWS instance as the trained models are not uploaded on github. Path to trained models: `/home/sakre/BUS_tumor_classification/GAN/model`  
+
+- __GAN/:__ Folder containing training/usage scripts for TorchGAN attempts on BUSI dataset
+	- __train_ACGAN.py:__ Trains an Auxillary Classifier GAN
+	- __train_ConditionalGAN.py:__ Trains a Conditional GAN
+	- __train_DCGAN.py:__ Trains a standard Deep Convolutional GAN
+	- __generate_conditional_gan_images.py:__ Generates example images from conditional GAN model trained for 2k epochs
+	- __generate_dcgan_images.py:__ Generates example images from DCGAN model trained for 2k epochs
+
+### Flask App
 - __flask_app.py:__ Web application for UI of segmentation/classification pipeline
 - __start_flask_dev.sh:__ Starts the flask web application in development mode to port 5000
-- __utils/__: Functions for loading/processing of data
-	- __busi_dataset.py__: Loads BUSI image data set for use with pytorch
 - __templates/__: Jinja2 templates for flask app
+	-__base.html__: Imports bootstrap style sheets, JQuery, and BootstrapJS 
+	-__home.html__: Main page, loads elements from `image_viewer.html` and `menu.html`
+	-__image_viewer.html__: Image component. Handles overlay of mask/BUS image
+	-__menu.html__: Contains all buttons/forms used
 - __static/__: Flask app static files (images, css, etc.)
 
+### Utilities
+- __utils/__: Functions for loading/processing of data
+	- __busi_dataset.py__: Loads BUSI image data set for use with pytorch

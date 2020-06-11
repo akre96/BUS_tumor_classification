@@ -1,5 +1,9 @@
 """ Example images from TorchGAN trained generator
 
+Example usage: 
+```
+python generate_dcgan_images.py [n_images] [output_directory]
+```
 Author: Samir Akre
 """
 from pathlib import Path
@@ -18,7 +22,6 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument("n_samples", type=int)
 	parser.add_argument("output_dir")
-	parser.add_argument("n_samples", type=int)
 	args = parser.parse_args()
 
 	model_path = 'model/labeled_gan_goodfiles.model'
