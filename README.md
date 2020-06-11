@@ -31,12 +31,12 @@ docker run --gpus all --publish=5000:5000 bus_seg:gpu
 ### TorchGAN
 _Note:_ The below scripts assume they are being run in the AWS instance as the trained models are not uploaded on github. Path to trained models: `/home/sakre/BUS_tumor_classification/GAN/model`  
 
-- __GAN/:__ Folder containing training/usage scripts for TorchGAN attempts on BUSI dataset
-	- __train_ACGAN.py:__ Trains an Auxillary Classifier GAN
-	- __train_ConditionalGAN.py:__ Trains a Conditional GAN
-	- __train_DCGAN.py:__ Trains a standard Deep Convolutional GAN
-	- __generate_conditional_gan_images.py:__ Generates example images from conditional GAN model trained for 2k epochs
-	- __generate_dcgan_images.py:__ Generates example images from DCGAN model trained for 2k epochs
+- __GAN/:__ Folder containing training/usage scripts for the attempts of TorchGAN and DCGAN from scratch on BUSI dataset
+	- __train_ACGAN.py:__ Trains an Auxillary Classifier GAN for TorchGAN
+	- __train_ConditionalGAN.py:__ Trains a Conditional GAN for TorchGAN
+	- __train_DCGAN.py:__ Trains a standard Deep Convolutional GAN for TorchGAN
+	- __generate_conditional_gan_images.py:__ Generates example images from conditional GAN model trained for 2k epochs for TorchGAN
+	- __generate_dcgan_images.py:__ Generates example images from DCGAN model trained for 2k epochs for TorchGAN
 	- __DCGAN_Ultrasound.ipynb:__ DCGAN building from scratch (contain pretrained weights for 2k epochs ~1.3 Gb)
 	- __dataloader.py:__ Data preprocessing for DCGAN building from scratch
 	- __discriminator_loss.py:__ Discriminator loss function for DCGAN building from scratch
