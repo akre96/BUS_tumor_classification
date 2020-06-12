@@ -58,7 +58,6 @@ Resnet50-UNet (ImageNet weights) | 0.4 |
 Densenet121-UNet (ImageNet weights) | 0.3 |
 Resnet18-Unet (retrained with previous weights) | 0.1 |
 
-<<<<<<< HEAD
 ##### Higest Iou (0.75) was acheived by Resnet18-UNet on an held-out external dataset.
 
 ## Loss Graph
