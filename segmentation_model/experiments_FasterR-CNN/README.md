@@ -49,4 +49,7 @@ Model Name | Validation IoU
 --- | --- |
 FasterR-CNN (COCO weights) | 0.7 |
 
+#### Top Row (Ground-Truth) | Bottom Row (Model Predictions)
+![Alt text](sample_prediction/prediction_1.png?raw=true "Sample Predictions")
+
 ##### When evaluated on a held-out test set, the IoU reported was 0.65.
