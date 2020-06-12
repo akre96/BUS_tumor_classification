@@ -4,10 +4,7 @@ The folder contains a UNet model with Resent18 backbone, trained on breast ultra
 ## Directory Structure
 ```
 checkpoints\ -> Saved weights for the model (used for Inference)
-<<<<<<< HEAD
 experiments_FasterR-CNN\ -> Contains a FasterR-CNN model for nodule localization
-=======
->>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
 sample_predictions\ -> Contains some of the prediction examples from this model
 ```
 ### Prerequisites
@@ -15,10 +12,7 @@ Running **train/predict** requires correct path to the input data and the follow
 
 ```
 matplotlib==3.1.1
-<<<<<<< HEAD
 opencv-python==4.2.0
-=======
->>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
 numpy==1.17.4
 scikit-image==0.15.0
 segmentation-models-pytorch==0.1.0
@@ -66,23 +60,16 @@ Resnet18-Unet (retrained with previous weights) | 0.1 |
 
 <<<<<<< HEAD
 ##### Higest Iou (0.75) was acheived by Resnet18-UNet on an held-out external dataset.
-=======
-##### Higest Validation Iou (0.75) was acheived by Resnet18-UNet on an held-out external dataset.
->>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
 
 ## Loss Graph
 #### UNet | Resnet18-Unet
 ![Alt text](loss_graph/U-netLoss_training_1.png?raw=true "Title")
-![Alt text](loss_graph/Resnet_18_Unet_loss_training_3.png?raw=true "UNet")
+![Alt text](loss_graph/Resnet_18_Unet_loss_training_3.png?raw=true "Title")
 
 #### Resnet50-UNet | Densenet121-Unet
-![Alt text](loss_graph/Resnet_50_Unet-loss_training.png?raw=true "UNet")
-![Alt text](loss_graph/Densenet121_Unet-loss_training.png?raw=true "UNet")
+![Alt text](loss_graph/Resnet_50_Unet-loss_training.png?raw=true "Title")
+![Alt text](loss_graph/Densenet121_Unet-loss_training.png?raw=true "Title")
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
 ## Conclusion
 * Out of the 3 classes, the **model** demonstrates reasonable performance in identifying **benign nodules**. It is harder to detect malignant cases because of the given complexity in shape and size of malignant nodules.
 A different segmentation model that can account for the nodule location as well as its shape & size could yield in better segmentation.
