@@ -30,12 +30,12 @@ and their respective masks respectively.
 ### Data Statistics
 
 * Total Images in dataset = 644
-* Number of Images for training = 516
-* Number of Images for validation = 128
+* Augmented the data by 7 times -> 7 x 644 = 4508 variations
+* Number of Images for training = 3607
+* Number of Images for validation = 901
 
 ### Data Processing
 * The ultrasoud images are normalized to a mean of and a variance of 0.5. The pixel values are scaled between 0 and 1.
-* The number of US images are upsampled by 7 times -> 7 x 644 = 4508 variations (Train/Val -> 3607/901).
 * For the purpose of using CNNs with CUDA, the data was resized to a tensor size of [1, 256, 256].
 
 ### Model Parameter
