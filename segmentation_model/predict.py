@@ -16,5 +16,9 @@ if __name__ == "__main__":
     path_to_image = "path_to_image (png/jpg/jpeg)"
     # RETURN A NUMPY ARRAY OF SIZE [256, 256]
     prediction = get_mask(path_to_image, weights_path)
+    cv2.imwrite('prediction.png', prediction)
+    print("PREDICTION SAVED!")
+    plt.imshow(prediction)
+    plt.show()
 
 
