@@ -2,7 +2,11 @@ import segmentation_models_pytorch as smp
 import numpy as np
 import torch
 import torch.nn as nn
+<<<<<<< HEAD
+from dataloader import DataProcessor
+=======
 from .dataloader import DataProcessor
+>>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
 from torch.utils.data import DataLoader, random_split
 import torch.optim as optim
 from skimage import io
@@ -29,10 +33,14 @@ class Resnet18Unet:
         if self.path_to_dict:
             weights = torch.load(path_to_dict, map_location=self.device)
             self.model.load_state_dict(weights)
+<<<<<<< HEAD
+        # Load model on CUDA/CPU
+=======
         # Load model on CUDA
+>>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
         self.model.to(self.device)
 
-    def train_model(self, path_to_images=None, path_to_masks=None, transformation=None, val_percent=0.11, batch_size=5, lr_rate=0.001, num_epochs=200):
+    def train_model(self, path_to_images=None, path_to_masks=None, transformation=None, val_percent=0.2, batch_size=5, lr_rate=0.001, num_epochs=200):
         # Data Loader
         if path_to_images and path_to_masks:
             dataset = DataProcessor(path_to_images, path_to_masks, transformations=transformation, resize_img=256)
@@ -104,13 +112,20 @@ class Resnet18Unet:
         else:
             return "Image and Mask path required!"
 
+<<<<<<< HEAD
+    def get_prediction(self, path_to_image=None):
+=======
     def get_prediction(self, path_to_image=None, resiz_img=None, expand_dim=True):
+>>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
         if path_to_image:
             image = rgb2gray(io.imread(path_to_image))
             dataset = DataProcessor(imgs_dir=None, masks_dir=None)
             processed = dataset.preprocess(image, new_size=256, expand_dim=True, adjust_label=False, normalize=True, img_transforms=None)
             img = torch.from_numpy(np.expand_dims(processed, axis=0))
+<<<<<<< HEAD
+=======
 
+>>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
             # get predictoin
             with torch.no_grad():
                 self.model.eval()

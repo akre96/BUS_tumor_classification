@@ -1,4 +1,8 @@
 matplotlib==3.1.1
+<<<<<<< HEAD
+opencv-python==4.2.0
+=======
+>>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
 numpy==1.17.4
 scikit-image==0.15.0
 segmentation-models-pytorch==0.1.0

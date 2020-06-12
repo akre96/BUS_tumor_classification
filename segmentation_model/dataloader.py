@@ -7,6 +7,7 @@ from os import listdir
 from torchvision import transforms
 from numpy import clip
 from skimage import io
+from skimage.color import rgb2gray
 from skimage.util import img_as_float, img_as_ubyte
 from skimage.transform import resize
 
@@ -29,25 +30,25 @@ class DataProcessor(Dataset):
         if expand_dim is True:
             if len(img.shape) == 2:
                 img = np.expand_dims(img, axis=2)
+                img = img.transpose((2, 0, 1))
 
-        img_trans = img.transpose((2, 0, 1))
         # Standarize pixel values
         if normalize:
-            if img_trans.max() > 1:
-                img_trans = (img_trans - img_trans.min()) / (img_trans.max() - img_trans.min())
-            img_trans = (img_trans - img_trans.mean()) / img_trans.std()
-            img_trans = clip(img_trans, -1.0, 1.0)
-            img_trans = (img_trans + 1.0) / 2.0
+            if img.max() > 1:
+                img = (img - img.min()) / (img.max() - img.min())
+            img = (img - img.mean()) / img.std()
+            img = clip(img, -1.0, 1.0)
+            img = (img + 1.0) / 2.0
 
         # For mask to have values between 0 and 1
         if adjust_label is True:
-            coords = np.where(img_trans != 0)
-            img_trans[coords] = 1
+            coords = np.where(img != 0)
+            img[coords] = 1
 
         # Apply transformations if specified
         if img_transforms:
-            img_trans = img_transforms(img_trans)
-        return img_trans
+            img = img_transforms(img)
+        return img
 
     def __getitem__(self, i):
         img_idx = self.imgs_ids[i]
@@ -55,8 +56,8 @@ class DataProcessor(Dataset):
         img_file = self.imgs_dir + img_idx
         mask_file = self.masks_dir + mask_idx
         # Read data (expects numpy here, change accordingly)
-        mask = io.imread(mask_file).astype('float32')
-        img = io.imread(img_file).astype('float32')
+        mask = rgb2gray(io.imread(mask_file).astype('float32'))
+        img = rgb2gray(io.imread(img_file).astype('float32'))
         assert img.size == mask.size, \
             f'Image and mask {i} should be the same size, but are {img.size} and {mask.size}'
         img = self.preprocess(img, self.resize, expand_dim=True, adjust_label=False, normalize=True,

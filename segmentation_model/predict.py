@@ -1,5 +1,11 @@
+<<<<<<< HEAD
+from model_class import Resnet18Unet
+import matplotlib.pyplot as plt
+import cv2
+=======
 from .model_class import Resnet18Unet
 import matplotlib.pyplot as plt
+>>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
 
 def get_mask(path_to_image=None, path_to_weights="checkpoints/Resnet18_UNet_0.19.pth"):
     if path_to_image:
@@ -13,7 +19,11 @@ if __name__ == "__main__":
     # WEIGHTS FOR MODEL
     weights_path = "checkpoints/Resnet18_UNet_0.19.pth"
     # PATH TO IMAGE
+<<<<<<< HEAD
+    path_to_image = "path_to_ultrasound_image\\" # (png/jpg/jpeg)
+=======
     path_to_image = "path_to_image (png/jpg/jpeg)"
+>>>>>>> ca5fcb00038374964f61f99dce74e0743423ac4d
     # RETURN A NUMPY ARRAY OF SIZE [256, 256]
     prediction = get_mask(path_to_image, weights_path)
     cv2.imwrite('prediction.png', prediction)
