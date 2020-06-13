@@ -1,9 +1,6 @@
 # FasterR-CNN
 The folder contains a FasterR-CNN implementation to localize nodules on breast ultrasound (US) dataset.
 
-### Note
-* The model checkpoint (needed for inference) is not provided here due to its large size. It could be provided upon request.
-
 ### Prerequisites
 Running **train/predict** requires correct path to the input data and the following **packages** for ```python-3.x```
 
